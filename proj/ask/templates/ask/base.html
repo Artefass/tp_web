@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-4.3.1-dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block page-css %}
+    {% endblock %}
+</head>
+<body>
+<header>
+    <!-- Grey with black text -->
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <a class="navbar-brand" href="{% url 'ask:index' %}">AskPavel</a>
+
+        <form class="form-inline mx-auto">
+            <input class="form-control mr-sm-2" type="search" placeholder="Введите вопрос" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Искать</button>
+            <a class="btn btn-success ml-2" href="{% url 'ask:ask' %}">Спросить</a>
+        </form>
+
+
+        <ul class="navbar-nav">
+            {% if user.nickname %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <img class="rounded-circle mini-avatar mr-1" src="{% static 'images/avatar.svg' %}">
+                        {{ user.nickname }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'ask:user-settings' %}">Редактировать</a>
+                        <a class="dropdown-item" href="#">Выйти</a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ask:register' %}">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ask:login' %}">Войти</a>
+                </li>
+            {% endif %}
+        </ul>
+
+
+    </nav>
+
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-9">
+                <div class="main-content">
+                    {% block page-content %}
+                    {% endblock %}
+                </div>    
+            </div>
+            <div class="col-3">
+                <div class="card my-card">
+                    <div class="card-header">
+                        Популярные теги
+                    </div>
+                    <div class="card-body">
+                        <a href="#" class="card-link">perl</a>
+                        <a href="#" class="card-link">python</a>
+                        <a href="#" class="card-link">TechnoPark</a>
+                        <a href="#" class="card-link">MySQL</a>
+                        <a href="#" class="card-link">django</a>
+                        <a href="#" class="card-link">Mail.Ru</a>
+                        <a href="#" class="card-link">Voloshin</a>
+                        <a href="#" class="card-link">Firefox</a>
+                    </div>
+                </div>
+                <div class="card my-card">
+                    <div class="card-header">
+                        Активные пользователи
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><a href="#" class="card-link">Mr.Freeman</a></li>
+                        <li class="list-group-item"><a href="#" class="card-link">Dr.House</a></li>
+                        <li class="list-group-item"><a href="#" class="card-link">Bender</a></li>
+                        <li class="list-group-item"><a href="#" class="card-link">Queen Victoria</a></li>
+                        <li class="list-group-item"><a href="#" class="card-link">V.Pupkin</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer></footer>
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'bootstrap-4.3.1-dist/js/bootstrap.js' %}"></script>
+{% block page-js %}
+{% endblock %}
+</body>
+</html>

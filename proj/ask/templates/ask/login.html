@@ -1,0 +1,30 @@
+{% extends 'ask/base.html' %}
+{% load static %}
+
+{% block page-css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block page-content %}
+    <h3 class="my-2">Вход</h3>
+    <div class="login-form">
+        <div class="row">
+            <div class="col-5 offset-3">
+                <form>
+                    <div class="form-group">
+                        <label for="login">Логин</label>
+                        <input type="text" class="form-control" id="login">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <button type="submit" class="btn btn-success">Войти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-js %}
+{% endblock %}

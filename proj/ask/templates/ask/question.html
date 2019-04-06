@@ -1,0 +1,100 @@
+{% extends 'ask/base.html' %}
+{% load static %}
+
+{% block page-css %}
+    <link rel="stylesheet" href="{% static 'css/question.css' %}">
+{% endblock %}
+
+{% block page-content %}
+    <div class="my-block my-4">
+        <div class="row">
+            <div class="col-2">
+                <img class="avatar" src="{% static 'images/avatar.svg' %}">
+                <div class="vote">
+                    <div class="vote__button vote__button__up">
+                        <img src="{% static 'images/up-arrow.svg' %}">
+                    </div>
+                    <div class="vote__value {% if question.raiting > -1 %}green{% else %}red
+
+                            {% endif %}">{{ question.raiting }}</div>
+                    <div class="vote__button vote__button__down">
+                        <img src="{% static 'images/down-arrow.svg' %}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-10">
+                <h3 class="my-2">{{ question.name }}</h3>
+                <p class="my-3">{{ question.description }}...</p>
+
+                <ul class="list-inline">
+                    <li class="list-inline-item">Теги:</li>
+                    {% for tag in question.tags %}
+                        <li class="list-inline-item"><a href="{% url 'ask:index-tag' tag %}">{{ tag }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <h3>Ответов: {{ question.count_answers }}</h3>
+
+    {% for answer in answers %}
+
+        <div class="my-block my-4">
+            <div class="row">
+                <div class="col-2">
+                    <img class="avatar" src="{% static 'images/avatar.svg' %}">
+                    <div class="vote">
+                        <div class="vote__button vote__button__up">
+                            <img src="{% static 'images/up-arrow.svg' %}">
+                        </div>
+                        <div class="vote__value {% if answer.raiting > -1 %}green{% else %}red
+
+                            {% endif %}">{{ answer.raiting }}</div>
+                        <div class="vote__button vote__button__down">
+                            <img src="{% static 'images/down-arrow.svg' %}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <p class="my-3">{{ answer.text }}...</p>
+
+                    <ul class="list-inline">
+                        {% if answer.correct == 0 %}
+                            <li class="list-inline-item list-item__check"><a href="#"><img
+                                    src="{% static 'images/checked.svg' %}"></a></li>
+                            <li class="list-inline-item">Правильно</li>
+                        {% else %}
+                            <li class="list-inline-item list-item__uncheck"><a href="#"><img
+                                    src="{% static 'images/unchecked.svg' %}"></a></li>
+                            <li class="list-inline-item">Верно?</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <nav class="my-3">
+        <ul class="pagination">
+            <li class="page-item disabled"><a class="page-link">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item disabled"><a class="page-link">...</a></li>
+            <li class="page-item"><a class="page-link" href="#">10</a></li>
+        </ul>
+    </nav>
+
+    <h3>Ваш ответ</h3>
+
+    <form class="pb-4">
+        <div class="form-group">
+            <textarea class="form-control" rows="3"></textarea>
+            <button type="submit" class="btn btn-success mt-2">Submit</button>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block page-js %}
+{% endblock %}

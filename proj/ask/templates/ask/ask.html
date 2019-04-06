@@ -1,0 +1,38 @@
+{% extends 'ask/base.html' %}
+{% load static %}
+
+{% block page-css %}
+    <link rel="stylesheet" href="{% static 'css/ask.css' %}">
+{% endblock %}
+
+{% block page-content %}
+    <h3 class="my-2">Новый вопрос</h3>
+    <div class="ask-form">
+        <div class="row">
+            <div class="col-5 offset-3">
+                <form>
+                    <div class="form-group">
+                        <label for="title">Заголовок вопроса</label>
+                        <input type="text" class="form-control" id="title"
+                               placeholder="Введите вопрос">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Описание вопроса</label>
+                        <textarea class="form-control" id="description" rows="6"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Теги</label>
+                        <input type="text" class="form-control" id="tags" aria-describedby="tagsHelp"
+                               placeholder="Введите теги">
+                        <small id="tagsHelp" class="form-text text-muted">Теги перечислять через пробел
+                        </small>
+                    </div>
+                    <button type="submit" class="btn btn-success">Спросить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-js %}
+{% endblock %}

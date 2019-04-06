@@ -1,0 +1,153 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #f1f3f5;
+}
+
+.my-card {
+    margin-top: 10px;
+    border: 0;
+}
+
+.my-card .card-header {
+    padding: 0.75rem 0;
+    border: 0;
+    background-color: #f1f3f5;
+}
+
+.my-card .card-body {
+    box-shadow: 0 6px 8px rgba(102,119,136,.03), 0 1px 2px rgba(102,119,136,.3);
+    border: 0;
+}
+
+.my-card .list-group {
+    box-shadow: 0 6px 8px rgba(102,119,136,.03), 0 1px 2px rgba(102,119,136,.3);
+    border: 0;
+}
+
+.my-card .list-group-item {
+    border: 0;
+}
+
+.main-content {
+    margin-top: 10px;
+}
+
+.nav-pills .nav-link.my-nav-link {
+    border-radius: 0;
+    color: #7C77A4;
+}
+
+.nav-pills .nav-link.my-nav-link:hover {
+    color: #ffffff;
+    background-color: #8363B7;
+}
+
+.nav-pills .nav-link.my-nav-link.active {
+    color: #fff;
+    background-color: #007bff;
+}
+
+img.avatar {
+    width: 100%;
+}
+
+img.mini-avatar {
+    width: 30px;
+}
+
+.pagination {
+    border-radius: 0;
+}
+
+.page-item:first-child .page-link,
+.page-item:last-child .page-link {
+    border-radius: 0;
+}
+
+.vote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vote__button {
+    height: 30px;
+    width: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.vote__button > img {
+    padding-bottom: 3px;
+}
+
+.vote__button__up {
+    margin-right: auto;
+}
+
+.vote__button__down {
+    margin-left: auto;
+}
+
+.vote__button__up:hover {
+    background: #07a23b;
+}
+
+.vote__button__down:hover {
+    background: red;
+}
+
+.vote__value {
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    margin-left: 9px;
+    margin-right: 9px;
+}
+
+.green {
+    color: #07a23b;
+}
+
+.red {
+    color: red;
+}
+
+.my-block {
+    background-color: #fff;
+    box-shadow: 0 6px 8px rgba(102,119,136,.03), 0 1px 2px rgba(102,119,136,.3);
+    padding-right: 20px;
+}
+
+.list-item__check:hover {
+    background-color: red;
+}
+
+.list-item__uncheck:hover {
+    background-color: #07a23b;
+}
+
+.list-inline-item > a > img,
+.list-inline-item > a > img {
+    width: 30px;
+}
+
+.card-link:first-child {
+    margin-left: 0rem;
+    margin-right: 1.25rem;
+    margin-top: 1rem;
+}
+
+.card-link + .card-link {
+    margin-left: 0rem;
+    margin-right: 1.25rem;
+    margin-top: 1rem;
+}
+
+
+
+
