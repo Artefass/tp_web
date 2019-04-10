@@ -1,0 +1,19 @@
+{% extends 'ask/base.html' %}
+{% load static %}
+{% load ask_extras %}
+
+{% block page-css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block page-content %}
+    {% include 'ask/includes/navigation_questions_menu.html' %}
+
+    {% include 'ask/includes/questions.html' %}
+
+    {% url "ask:index-hot" as index_hot_url %}
+    {% pagination paginator questions_page.number index_hot_url %}
+{% endblock %}
+
+{% block page-js %}
+{% endblock %}

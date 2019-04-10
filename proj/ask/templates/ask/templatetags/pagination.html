@@ -1,0 +1,25 @@
+<nav class="my-3">
+    <ul class="pagination">
+        {% if page_middle_start|add:"-1" >= 1 %}
+            <li class="page-item"><a class="page-link" href="{{ url }}?page=1">1</a></li>
+            {% if page_middle_start|add:"-2" >= 1 %}
+                <li class="page-item disabled"><a class="page-link">...</a></li>
+            {% endif %}
+        {% endif %}
+
+        {% for page in pages %}
+            {% if page == curr_page %}
+                <li class="page-item active"><a class="page-link">{{ page }}</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="{{ url }}?page={{ page }}">{{ page }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_middle_end|add:"1" <= num_pages %}
+            {% if page_middle_end|add:"2" <= num_pages %}
+                <li class="page-item disabled"><a class="page-link">...</a></li>
+            {% endif %}
+            <li class="page-item"><a class="page-link" href="{{ url }}?page={{ num_pages }}">{{ num_pages }}</a></li>
+        {% endif %}
+    </ul>
+</nav>

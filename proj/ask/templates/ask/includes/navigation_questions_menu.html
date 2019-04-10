@@ -1,0 +1,11 @@
+{% url 'ask:index' as index_new_url %}
+{% url 'ask:index-hot' as index_hot_url %}
+
+<ul class="nav nav-pills nav-fill">
+    <li class="nav-item">
+        <a class="nav-link my-nav-link {% if request.path == index_new_url  %}active{% endif %}" href="{{ index_new_url }}">Новые вопросы</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link my-nav-link {% if request.path == index_hot_url  %}active{% endif %}" href="{{ index_hot_url }}">Горячие вопросы</a>
+    </li>
+</ul>

@@ -1,5 +1,6 @@
 {% extends 'ask/base.html' %}
 {% load static %}
+{% load ask_extras %}
 
 {% block page-css %}
     <link rel="stylesheet" href="{% static 'css/question.css' %}">
@@ -74,16 +75,9 @@
             </div>
         </div>
     {% endfor %}
-    <nav class="my-3">
-        <ul class="pagination">
-            <li class="page-item disabled"><a class="page-link">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item disabled"><a class="page-link">...</a></li>
-            <li class="page-item"><a class="page-link" href="#">10</a></li>
-        </ul>
-    </nav>
+
+    {% url "ask:question" question.id as question_url %}
+    {% pagination answers_paginator answers_page.number question_url %}
 
     <h3>Ваш ответ</h3>
 

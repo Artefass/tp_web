@@ -1,0 +1,19 @@
+{% extends 'ask/base.html' %}
+{% load static %}
+{% load ask_extras %}
+
+{% block page-css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block page-content %}
+    <h3 class="my-2">Поиск по тегу: {{ tag_name }}</h3>
+
+    {% include 'ask/includes/questions.html' %}
+
+    {% url "ask:index-tag" tag_name as index_tag_url %}
+    {% pagination paginator questions_page.number index_tag_url %}
+{% endblock %}
+
+{% block page-js %}
+{% endblock %}

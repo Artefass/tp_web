@@ -1,0 +1,45 @@
+{% load static %}
+
+<div class="list-questions">
+    {% for question in questions %}
+        <div class="item-question">
+            <div class="row">
+                <div class="col-2">
+                    <img class="avatar" src="{% static 'images/avatar.svg' %}">
+                    <div class="vote">
+                        <div class="vote__button vote__button__up">
+                            <img src="{% static 'images/up-arrow.svg' %}">
+                        </div>
+                        <div class="vote__value {% if question.raiting > -1 %}green{% else %}red
+
+                            {% endif %}">{{ question.raiting }}</div>
+                        <div class="vote__button vote__button__down">
+                            <img src="{% static 'images/down-arrow.svg' %}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <h3 class="my-1"><a href="{% url 'ask:question' question_id=question.id %}">{{ question.name }}</a>
+                    </h3>
+                    <p>{{ question.description|slice:"256" }}...</p>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <p>Ответов: <span>{{ question.count_answers }}</span></p>
+                        </div>
+                        <div class="col-8">
+                            <ul class="list-inline">
+                                <li class="list-inline-item">Теги:</li>
+                                {% for tag in question.tags %}
+                                    <li class="list-inline-item"><a href="{% url 'ask:index-tag' tag %}">{{ tag }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

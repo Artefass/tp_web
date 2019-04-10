@@ -1,11 +1,13 @@
 from django.shortcuts import render
+from django.views.decorators.http import require_GET
+from django.core.paginator import Paginator, InvalidPage
 
 # Create your views here.
 
 # test data
-def questiondata():
-    question = {
-            "id": 1,
+def questionsdata():
+    questions = [{
+            "id": i,
             "name":"Две фазы в выключателе без нагрузки",
             "description": "При установке нового димера замерил " +
                            "пробником-отверткой два провода на выключатель" +
@@ -22,12 +24,13 @@ def questiondata():
             "tags": ["Проводка", "фазы", "электропитание"],
             "raiting":123,
             "count_answers": 3
-    }
-    return question
+    } for i in range(1,40)]
+    return list(questions)
 
-def answerdata():
-    answer = {
-        "id": 1,
+def answersdata(question_id = 1):
+    answers = [{
+        "id": i,
+        "question_id": question_id,
         "text": "предположим, что чудес не бывает, тогда "
                 "предположение 1- диммер не все равно как "
                 "его подключать, т.е фаза к фазе. N к N. это"
@@ -37,34 +40,99 @@ def answerdata():
                 "'настольной' проводкой.",
         "correct": True,
         "raiting": 10,
-    }
-    return answer
+    } for i in range(1,10)]
+    return list(answers)
 
-def index(request, tag = None):
+def userdata():
+    user = {
+        "id": 1,
+        "email": "example@com",
+        "login": "qwerty",
+        "nickname": "Dr.House"
+    }
+    return user
+
+
+def paginate(objects_list, request):
+    page_num  = request.GET.get("page", "1")
+    try:
+        page_num = int(page_num)
+    except ValueError:
+        page_num = 1
+
+    page_size = request.GET.get("page_size", "5")
+    try:
+        page_size = int(page_size)
+        page_size = page_size if page_size >= 5 and page_size <= 10 else 5
+    except ValueError:
+        page_size = 5
+
+    paginator = Paginator(objects_list, page_size)
+
+    try:
+        page = paginator.get_page(page_num)
+    except InvalidPage:
+        page = paginator.get_page(1)
+
+    return page, paginator
+
+@require_GET
+def index(request):
+    questions = questionsdata()
+    questions_page, questions_paginator = paginate(questions, request)
+    search_type = "new"
+
     auth = request.GET.get("auth")
     print(auth)
     user = {}
     if auth:
-        user["nickname"] = "Dr.House"
-        print("OK")
-    question = questiondata()
-    questions = [question] * 2
+        user.update(userdata())
 
     context = {
-        "questions": questions,
-        "user":user
+        "questions": questions_page.object_list,
+        "questions_page": questions_page,
+        "paginator": questions_paginator,
+        "user":user,
+        "search_type": search_type
     }
 
-    search_type = request.GET.get("search_type", "new")
-    if search_type == "question":
-        context.update({"question": "Бла бла бла"})
-    elif tag is not None:
-        context.update({"tag_name": tag})
-        search_type = "tag"
+    return render(request, 'ask/index_new.html', context=context)
 
-    context["search_type"] = search_type
+@require_GET
+def index_hot(request):
+    questions = questionsdata()
+    questions_page, questions_paginator = paginate(questions, request)
+    search_type = "hot"
 
-    return render(request, 'ask/index.html', context=context)
+    auth = request.GET.get("auth")
+    user = {}
+    if auth:
+        user.update(userdata())
+
+    context = {
+        "questions": questions_page.object_list,
+        "questions_page": questions_page,
+        "paginator": questions_paginator,
+        "user": user,
+        "search_type": search_type
+    }
+    return render(request, 'ask/index_hot.html', context=context)
+
+@require_GET
+def index_search_by_tag(request, tag_name):
+    questions = questionsdata()
+    questions_page, questions_paginator = paginate(questions, request)
+
+    user = {}
+
+    context = {
+        "questions": questions_page.object_list,
+        "questions_page": questions_page,
+        "paginator": questions_paginator,
+        "user": user,
+        "tag_name": tag_name
+    }
+    return render(request, 'ask/index_search_by_tag.html', context=context)
 
 def ask(request):
     return render(request, 'ask/ask.html')
@@ -76,24 +144,24 @@ def signup(request):
     return render(request, 'ask/signup.html')
 
 def question(request, question_id):
-
-    question = questiondata()
-    answer  = answerdata()
-    answers = [answer.copy() for i in range(3)]
+    question = questionsdata()[question_id - 1]
+    answers  = answersdata(question_id)
     answers[1]["correct"] = False
 
-    return render(request, 'ask/question.html', context={
-        "question": question,
-        "answers":  answers
-    })
+    answers_page, answers_paginator = paginate(answers, request)
+
+    context = {
+        "question" : question,
+        "answers": answers_page.object_list,
+        "answers_page": answers_page,
+        "answers_paginator": answers_paginator,
+    }
+    return render(request, 'ask/question.html', context=context)
 
 def settings(request):
-    user = {
-        "id": 1,
-        "email": "example@com",
-        "login": "qwerty",
-        "nickname": "Dr.House"
+    user = userdata()
+
+    context = {
+        "user":user
     }
-    return render(request, 'ask/settings.html', context={
-        "user": user
-    })
+    return render(request, 'ask/settings.html', context=context)
