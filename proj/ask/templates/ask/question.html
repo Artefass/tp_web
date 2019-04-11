@@ -29,15 +29,15 @@
 
                 <ul class="list-inline">
                     <li class="list-inline-item">Теги:</li>
-                    {% for tag in question.tags %}
-                        <li class="list-inline-item"><a href="{% url 'ask:index-tag' tag %}">{{ tag }}</a></li>
+                    {% for tag in question.tags.all %}
+                        <li class="list-inline-item"><a href="{% url 'ask:index-tag' tag.name %}">{{ tag.name }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
 
-    <h3>Ответов: {{ question.count_answers }}</h3>
+    <h3>Ответов: {{ question.answers_count }}</h3>
 
     {% for answer in answers %}
 

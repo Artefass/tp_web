@@ -19,19 +19,19 @@
                     </div>
                 </div>
                 <div class="col-10">
-                    <h3 class="my-1"><a href="{% url 'ask:question' question_id=question.id %}">{{ question.name }}</a>
+                    <h3 class="my-1"><a href="{% url 'ask:question' question_id=question.id %}">{{ question.title }}</a>
                     </h3>
                     <p>{{ question.description|slice:"256" }}...</p>
 
                     <div class="row">
                         <div class="col-4">
-                            <p>Ответов: <span>{{ question.count_answers }}</span></p>
+                            <p>Ответов: <span>{{ question.answers_count }}</span></p>
                         </div>
                         <div class="col-8">
                             <ul class="list-inline">
                                 <li class="list-inline-item">Теги:</li>
-                                {% for tag in question.tags %}
-                                    <li class="list-inline-item"><a href="{% url 'ask:index-tag' tag %}">{{ tag }}</a>
+                                {% for tag in question.tags.all %}
+                                    <li class="list-inline-item"><a href="{% url 'ask:index-tag' tag.name %}">{{ tag.name }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>

@@ -1,47 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator, InvalidPage
 
+from .models import (
+    Question, Answer, Tag, Vote, Profile
+)
+
 # Create your views here.
-
-# test data
-def questionsdata():
-    questions = [{
-            "id": i,
-            "name":"Две фазы в выключателе без нагрузки",
-            "description": "При установке нового димера замерил " +
-                           "пробником-отверткой два провода на выключатель" +
-                           " - и там и там фаза! Как?! Лампы в люстре "
-                           "выкручены все. Вкрутили лампу, на выключателе,"
-                           " как и положено - ноль и фаза, лампа светит"
-                           " при замыкании контактов на выключатель."
-                           " Выкручиваем лампу - опять вторая фаза "
-                           "появляется. Замыкание между проводов нет,"
-                           " проверял мультиметром. На люстре - фаза"
-                           " на постоянке, пробник показывает. И "
-                           "одновременно фаза на обоих концах провода"
-                           " на выключатель. Что за ерунда....",
-            "tags": ["Проводка", "фазы", "электропитание"],
-            "raiting":123,
-            "count_answers": 3
-    } for i in range(1,40)]
-    return list(questions)
-
-def answersdata(question_id = 1):
-    answers = [{
-        "id": i,
-        "question_id": question_id,
-        "text": "предположим, что чудес не бывает, тогда "
-                "предположение 1- диммер не все равно как "
-                "его подключать, т.е фаза к фазе. N к N. это"
-                " надо проверить в описании и на клеммах. "
-                "предположение 2 - 1 диммер сгорел. второй "
-                "неисправен. легко проверить на лампочке с "
-                "'настольной' проводкой.",
-        "correct": True,
-        "raiting": 10,
-    } for i in range(1,10)]
-    return list(answers)
 
 def userdata():
     user = {
@@ -78,58 +43,41 @@ def paginate(objects_list, request):
 
 @require_GET
 def index(request):
-    questions = questionsdata()
+    questions = Question.objects.new()
     questions_page, questions_paginator = paginate(questions, request)
     search_type = "new"
-
-    auth = request.GET.get("auth")
-    print(auth)
-    user = {}
-    if auth:
-        user.update(userdata())
-
     context = {
         "questions": questions_page.object_list,
         "questions_page": questions_page,
         "paginator": questions_paginator,
-        "user":user,
-        "search_type": search_type
+        "search_type": search_type,
     }
 
     return render(request, 'ask/index_new.html', context=context)
 
 @require_GET
 def index_hot(request):
-    questions = questionsdata()
+    questions = Question.objects.hot()
     questions_page, questions_paginator = paginate(questions, request)
     search_type = "hot"
-
-    auth = request.GET.get("auth")
-    user = {}
-    if auth:
-        user.update(userdata())
 
     context = {
         "questions": questions_page.object_list,
         "questions_page": questions_page,
         "paginator": questions_paginator,
-        "user": user,
         "search_type": search_type
     }
     return render(request, 'ask/index_hot.html', context=context)
 
 @require_GET
 def index_search_by_tag(request, tag_name):
-    questions = questionsdata()
+    questions = Question.objects.filter(tags__name=tag_name)
     questions_page, questions_paginator = paginate(questions, request)
-
-    user = {}
 
     context = {
         "questions": questions_page.object_list,
         "questions_page": questions_page,
         "paginator": questions_paginator,
-        "user": user,
         "tag_name": tag_name
     }
     return render(request, 'ask/index_search_by_tag.html', context=context)
@@ -143,11 +91,10 @@ def login(request):
 def signup(request):
     return render(request, 'ask/signup.html')
 
+@require_GET
 def question(request, question_id):
-    question = questionsdata()[question_id - 1]
-    answers  = answersdata(question_id)
-    answers[1]["correct"] = False
-
+    question = get_object_or_404(Question, id=question_id)
+    answers  = Answer.objects.filter(question_id=question_id).all()
     answers_page, answers_paginator = paginate(answers, request)
 
     context = {
@@ -156,6 +103,7 @@ def question(request, question_id):
         "answers_page": answers_page,
         "answers_paginator": answers_paginator,
     }
+
     return render(request, 'ask/question.html', context=context)
 
 def settings(request):
