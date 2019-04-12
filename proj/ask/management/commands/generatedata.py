@@ -19,9 +19,9 @@ class Command(BaseCommand):
 
         MAX_RANDOM_USER = 10
         MAX_RANDOM_TAGS = 20
-        MAX_RANDOM_QUESTIONS = 30
-        MAX_RANDOM_ANSWERS = 40
-        MAX_RANDOM_VOTES = 20
+        MAX_RANDOM_QUESTIONS = 100
+        MAX_RANDOM_ANSWERS = 500
+        MAX_RANDOM_VOTES = 10000
 
 
         # генерируем теги
@@ -114,25 +114,41 @@ class Command(BaseCommand):
                 ContentType.objects.get_for_model(Answer),
             ]
 
+            models_list = [
+                Question,
+                Answer,
+            ]
+
             random_vote = random.randint(0,1)
             random_vote = 1 if random_vote else -1
 
             random_content_type = random.randint(0,1)
             random_content_type = content_type_list[random_content_type]
 
+            model = None
             if random_content_type == content_type_list[0]:
                 object_id = random.randint(1, MAX_RANDOM_QUESTIONS)
+                model = models_list[0]
             else:
                 object_id = random.randint(1, MAX_RANDOM_ANSWERS)
+                model = models_list[1]
 
-            vote = Vote(
-                id=i,
-                user_vote=random_vote,
-                user=User.objects.get(id=random_user),
-                content_type=random_content_type,
-                object_id=object_id
-            )
-            vote.save()
+            try:
+                vote = Vote.objects.get(object_id=object_id, content_type=random_content_type, user_id=random_user)
+            except Vote.DoesNotExist:
+                user = User.objects.get(id=random_user)
+                vote = Vote(
+                    id=i,
+                    user_vote=random_vote,
+                    user=user,
+                    content_type=random_content_type,
+                    object_id=object_id
+                )
+                vote.save()
+
+                obj = model.objects.get(id=object_id)
+                obj.raiting += random_vote
+                obj.save()
 
         self.stdout.write("Generation data is success!")
 

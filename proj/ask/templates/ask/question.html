@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="col-10">
-                <h3 class="my-2">{{ question.name }}</h3>
+                <h3 class="my-2">{{ question.title }}</h3>
                 <p class="my-3">{{ question.description }}...</p>
 
                 <ul class="list-inline">
@@ -83,7 +83,8 @@
 
     <form class="pb-4">
         <div class="form-group">
-            <textarea class="form-control" rows="3"></textarea>
+            <label class="sr-only" for="text">текст</label>
+            <textarea class="form-control" id="text" rows="3"></textarea>
             <button type="submit" class="btn btn-success mt-2">Submit</button>
         </div>
     </form>

@@ -94,7 +94,7 @@ def signup(request):
 @require_GET
 def question(request, question_id):
     question = get_object_or_404(Question, id=question_id)
-    answers  = Answer.objects.filter(question_id=question_id).all()
+    answers  = Answer.objects.filter(question_id=question_id)
     answers_page, answers_paginator = paginate(answers, request)
 
     context = {
