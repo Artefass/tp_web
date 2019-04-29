@@ -4,7 +4,7 @@ register = template.Library()
 
 @register.inclusion_tag('ask/templatetags/pagination.html')
 def pagination(paginator, current_page, url):
-    num_pages = paginator.num_pages
+    num_pages = paginator.num_pages if paginator.count > 0 else 0
     page_middle_start = current_page - 4
     page_middle_start = page_middle_start if page_middle_start > 0 else 1
 

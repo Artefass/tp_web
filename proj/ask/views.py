@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator, InvalidPage
+from django.db.models import Count
 
 from .models import (
     Question, Answer, Tag, Vote, Profile
@@ -45,7 +46,9 @@ def paginate(objects_list, request):
 def index(request):
     questions = Question.objects.new()
     questions_page, questions_paginator = paginate(questions, request)
+    questions_page.object_list = questions_page.object_list.annotate(answersaa_count=Count('answer'))
     search_type = "new"
+
     context = {
         "questions": questions_page.object_list,
         "questions_page": questions_page,

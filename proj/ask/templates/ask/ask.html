@@ -13,19 +13,26 @@
                 <form>
                     <div class="form-group">
                         <label for="title">Заголовок вопроса</label>
-                        <input type="text" class="form-control" id="title"
+                        <input type="text" class="form-control  is-invalid" id="title"
                                placeholder="Введите вопрос">
+                        <div class="invalid-feedback">
+                            Заголовок вопроса не должен быть пустым.
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="description">Описание вопроса</label>
                         <textarea class="form-control" id="description" rows="6"></textarea>
+
                     </div>
                     <div class="form-group">
                         <label for="tags">Теги</label>
-                        <input type="text" class="form-control" id="tags" aria-describedby="tagsHelp"
+                        <input type="text" class="form-control    is-invalid" id="tags" aria-describedby="tagsHelp"
                                placeholder="Введите теги">
                         <small id="tagsHelp" class="form-text text-muted">Теги перечислять через пробел
                         </small>
+                        <div class="invalid-feedback">
+                            Список тегов пуст.
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-success">Спросить</button>
                 </form>
