@@ -45,14 +45,12 @@ def paginate(objects_list, request):
 @require_GET
 def index(request):
     questions = Question.objects.new()
-    questions_page, questions_paginator = paginate(questions, request)
-    questions_page.object_list = questions_page.object_list.annotate(answersaa_count=Count('answer'))
+    questions_page, _ = paginate(questions, request)
+    questions_page.object_list = questions_page.object_list.annotate(answers_count=Count('answer'))
     search_type = "new"
 
     context = {
-        "questions": questions_page.object_list,
         "questions_page": questions_page,
-        "paginator": questions_paginator,
         "search_type": search_type,
     }
 
@@ -61,13 +59,13 @@ def index(request):
 @require_GET
 def index_hot(request):
     questions = Question.objects.hot()
-    questions_page, questions_paginator = paginate(questions, request)
+    questions_page, _ = paginate(questions, request)
+    questions_page.object_list = questions_page.object_list.annotate(answers_count=Count('answer'))
     search_type = "hot"
 
     context = {
         "questions": questions_page.object_list,
         "questions_page": questions_page,
-        "paginator": questions_paginator,
         "search_type": search_type
     }
     return render(request, 'ask/index_hot.html', context=context)
@@ -75,12 +73,11 @@ def index_hot(request):
 @require_GET
 def index_search_by_tag(request, tag_name):
     questions = Question.objects.filter(tags__name=tag_name)
-    questions_page, questions_paginator = paginate(questions, request)
+    questions_page, _ = paginate(questions, request)
+    questions_page.object_list = questions_page.object_list.annotate(answers_count=Count('answer'))
 
     context = {
-        "questions": questions_page.object_list,
         "questions_page": questions_page,
-        "paginator": questions_paginator,
         "tag_name": tag_name
     }
     return render(request, 'ask/index_search_by_tag.html', context=context)
@@ -98,13 +95,11 @@ def signup(request):
 def question(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     answers  = Answer.objects.filter(question_id=question_id)
-    answers_page, answers_paginator = paginate(answers, request)
+    answers_page, _ = paginate(answers, request)
 
     context = {
         "question" : question,
-        "answers": answers_page.object_list,
         "answers_page": answers_page,
-        "answers_paginator": answers_paginator,
     }
 
     return render(request, 'ask/question.html', context=context)

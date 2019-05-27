@@ -1,5 +1,5 @@
 <nav class="my-3">
-    {% if num_pages > 0 %}
+    {% if num_pages > 1 %}
         <ul class="pagination">
             {% if page_middle_start|add:"-1" >= 1 %}
                 <li class="page-item"><a class="page-link" href="{{ url }}?page=1">1</a></li>

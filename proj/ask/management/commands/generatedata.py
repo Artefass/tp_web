@@ -233,5 +233,17 @@ class Command(BaseCommand):
             Vote.objects.bulk_create(votes_objs_list)
             votes_count += chunk
 
+        questions_objs_list = []
+        for question in Question.objects.all():
+            question.raiting = question.votes.sum_raiting()
+            questions_objs_list.append(question)
+        Question.objects.bulk_update(questions_objs_list, ["raiting"])
+
+        answers_objs_list = []
+        for answer in Answer.objects.all():
+            answer.raiting = answer.votes.sum_raiting()
+            answers_objs_list.append(answer)
+        Answer.objects.bulk_update(answers_objs_list, ["raiting"])
+
         self.stdout.write("Generation Votes is success!")
         self.stdout.write("Generation data is success!")

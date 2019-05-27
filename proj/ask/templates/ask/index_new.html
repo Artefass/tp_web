@@ -12,7 +12,7 @@
     {% include 'ask/includes/questions.html' %}
 
     {% url "ask:index" as index_url %}
-    {% pagination paginator questions_page.number index_url %}
+    {% pagination questions_page index_url %}
 {% endblock %}
 
 {% block page-js %}
